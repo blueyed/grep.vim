@@ -618,7 +618,10 @@ function! s:RunGrepSpecial(cmd_name, which, action, ...)
 
         while i <= last_bufno
             if bufexists(i) && buflisted(i)
-                let filenames = filenames . " " . bufname(i)
+                let full_path = fnamemodify(bufname(i), ':p')
+                if filereadable(full_path)
+                    let filenames = filenames . " " . fnameescape(full_path)
+                endif
             endif
             let i = i + 1
         endwhile
